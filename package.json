@@ -1,0 +1,22 @@
+{
+  "name": "project-configs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --mode development",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexShan2008/project-configs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexShan2008/project-configs/issues"
+  },
+  "homepage": "https://github.com/AlexShan2008/project-configs#readme"
+}
