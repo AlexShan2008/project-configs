@@ -1,0 +1,28 @@
+// 变量声明
+$f1f :#f1f1f1;
+$link-color:green;
+
+// mixin
+@mixin rounded-corners {
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+// 嵌套
+body{
+  background-color: $f1f;
+  h1{
+    font-size:30px;
+    font-weight: 500;
+    @include rounded-corners;
+  }
+}
+
+// 父选择器的标识符&;
+a{
+  color: blue;
+  &:hover{
+    color:$link-color;
+  }
+}

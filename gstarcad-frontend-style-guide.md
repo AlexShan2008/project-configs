@@ -1,22 +1,46 @@
-# Google JavaScript Style Guide
-> 此文档不仅仅是一份编码风格的文档,更是一份javascript的进阶教学文档,推荐所有的前台工程师都能好好阅读一遍
+# GstarCAD Front-End Style Guide
+> 此文档不仅仅是一份编码风格的文档,更是一份`javascript,css,html`的进阶教学文档,推荐所有的前台工程师都能好好阅读一遍
 
 ## *目录*
 
-## 1介绍
-### 1.1术语说明
-在本文件中，除非另有说明：
-1.术语评论总是指实施评论。 我们不使用“文档评论”这个短语
-，而不是使用通用术语“JSDoc”来表示人类可读的文本和/ ** ... * /中的机器可读注释。
-2.本风格指南使用RFC 2119术语时，必须使用短语，绝不应该，应该
-不，也可能。 术语优先和避免分别对应于应该和不应该。
-强制性和陈述性陈述是规定性的并且对应于必须的。
-其他“术语说明”在本文件中偶尔会出现。
+## 1 介绍
 
-### 1.2指导说明
-本文档中的示例代码是非规范的。 也就是说，虽然这些示例是Google风格的，但它们可能没有说明代表代码的唯一时尚方式。 示例中的可选格式选择必须
-不作为规则执行。
-## 2源文件基础
+### 1.1 本文档中的示例代码是非规范的。仅供学习和参考。
+
+## 2 项目结构
+|——  dist/ 打包编译后的所有文件存放于此
+
+|—— middleware/ 中间件
+mock/ 模拟数据
+node_modules /依赖包
+router /路由
+server /服务端
+src/ 前端项目源代码
+  api /项目api
+  common /通用文件夹（css、其他文件）
+  components /展示组件
+  containers /容器组件
+  images /图片
+  store /数据仓库
+    action /action动作
+    reducer /纯函数
+    action-types /统一存放action的类型
+    index.js /redux入口文件
+test /测试
+util /事件
+.babelrc /babel编译
+.editorconfig /编辑器格式
+.eslintrc /eslint代码风格
+.gitignore /git仓库管理
+.npmrc /npm仓库
+app.js /项目入口文件
+package.json /包依赖总表
+postcss.config.js /css样式兼容
+README.md /项目说明
+webpack.config.js /webpack配置文件
+
+
+## 2 源文件基础
 ### 2.1文件名称
 文件名必须全部小写，可以包含下划线（_）或破折号（ - ），但不得包含其他内容标点。 遵循你的项目使用的约定。 文件名的扩展名必须是.js。
 ### 2.2文件编码：UTF-8
