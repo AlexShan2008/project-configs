@@ -2,6 +2,9 @@ import './common/login.scss';
 
 let a = 'Login';
 
-let container = document.getElementsByClassName('container')[0];
+import './common/reset.css';
+import './common/login.scss';
 
-container.innerText = 'Container';
+let oContainer = document.getElementsByClassName('container')[0];
+
+oContainer.innerHTML = 'Container';

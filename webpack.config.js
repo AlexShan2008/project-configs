@@ -1,10 +1,13 @@
 const path = require('path');
 let htmlWebpackPlugin = require('html-webpack-plugin');
-// let cleanWebpackPlugin = require('clean-webpack-plugin'); //删除上次打包的文件；
+let cleanWebpackPlugin = require('clean-webpack-plugin'); //删除上次打包的文件；
 let webpack = require('webpack');
-let ExtractTextPlugin = require('extract-text-webpack-plugin');
 let PurifyCss = require('purifycss-webpack'); //去掉多余css，没有使用的css代码
-let Glob = require('glob'); //搜索引用；
+let Glob = require('glob'); //搜索CSS引用；
+let ExtractTextPlugin = require('extract-text-webpack-plugin');
+// Create multiple instances
+const extractCSS = new ExtractTextPlugin('css/style.css');
+const extractSCSS = new ExtractTextPlugin('css/login.scss');
 
 module.exports = {
   // 多入口文件的两种写法; 1.写成数组的方式，输入多个，entry:
@@ -22,17 +25,25 @@ module.exports = {
   //对模块的处理
   module: {
     rules: [
-      { test: /\.css$/, use: ExtractTextPlugin.extract({ use: 'css-loader' }) },
-      // {
-      //   test: /\.(css|scss|sass)$/,
-      //   use: ExtractTextPlugin.extract({
-      //     use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
-      //     publicPath: '../'
-      //   }),
-      // },
       {
-        test: /\.(scss|sass)$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
+        test: /\.css$/,
+        use: extractCSS.extract({
+          use: ['css-loader', 'postcss-loader'],
+          publicPath: '../'
+        })
+      },
+      {
+        test: /\.(scss|sass)$/i,
+        use: extractSCSS.extract({
+          use: ['css-loader', 'postcss-loader', 'sass-loader'],
+          publicPath: '../'
+        }),
+      },
+      {
+        test: /\.(jsx|js)$/,
+        use: 'babel-loader',
+        include: path.resolve(__dirname, "src"),// 只转化src目录下的js
+        exclude: /node_modules/  // 排除掉node_modules，优化打包速度
       },
       {
         test: /\.(jpe?g|png|gif)$/i,
@@ -48,24 +59,39 @@ module.exports = {
       }
     ]
   },
+  resolve: {
+    // 别名
+    // alias: {
+    //   $: './src/jquery.js'
+    // },
+    // 省略后缀
+    extensions: ['.js', '.json', '.css']
+  },
   //对应的插件
   plugins: [
-    // new cleanWebpackPlugin(['dist']),
-    new webpack.HotModuleReplacementPlugin(),
+    new cleanWebpackPlugin(['dist']),
+    new webpack.HotModuleReplacementPlugin(),//模块打包热更新
     // 拆分后会把css文件放到dist目录下的css/style.css
-    new ExtractTextPlugin('css/style.css'),
+    extractCSS,
+    extractSCSS,
+    // new ExtractTextPlugin('css/style.css'),
     new PurifyCss({
       paths: Glob.sync(path.join(__dirname, 'src/*.html'))
     }),
     new htmlWebpackPlugin({
-      filename: 'index.html', template: './public/index.html', chunks: ['index'], hash: true, //mdn文件名带md5蹉
+      filename: 'index.html',
+      template: './public/index.html',
+      chunks: ['index'],
+      hash: true, //mdn文件名带md5蹉
       minify: {
         collapseWhitespace: true, //去空格
         removeAttributeQuotes: true //去双引号
       }
     }),
     new htmlWebpackPlugin({
-      filename: 'login.html', template: './public/index.html', hash: true, //mdn文件名带md5蹉
+      filename: 'login.html',
+      template: './public/index.html',
+      hash: true, //mdn文件名带md5蹉
       chunks: ['login'],
       minify: {
         collapseWhitespace: true, //去空格
@@ -73,13 +99,12 @@ module.exports = {
       }
     })
   ],
-  //开发服务器的配置,启动静态服务器
+  //开发服务器的配置
   devServer: {
     contentBase: './dist',
     host: 'localhost',
     port: 3000,
     open: true,
     hot: true, //需要配置一个插件webpack.HotModuleReplacementPlugin
-  },
-  mode: 'development'
+  }
 }
